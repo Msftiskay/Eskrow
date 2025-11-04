@@ -1,0 +1,17 @@
+﻿venv/
+node_modules/
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.DS_Store
+db.sqlite3
+media/
+staticfiles/
+.vscode/
+*.swp
+build/
+dist/
+cache/
+artifacts/
