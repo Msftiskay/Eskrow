@@ -2,11 +2,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-/**
- * @title MinimalEscrow
- * @dev Core smart contract for the Eskrow platform's fund management.
- * Includes inline security features (Ownable, ReentrancyGuard) to remove imports.
- */
 contract MinimalEscrow {
     // === INLINE OWNABLE IMPLEMENTATION ===
     address private immutable _owner;
@@ -31,7 +26,7 @@ contract MinimalEscrow {
     enum ProjectStatus { PendingFunding, Active, Completed, Disputed, Cancelled }
     enum MilestoneStatus { Pending, Submitted, Approved }
 
-    // === STRUCTS ===
+    // STRUCTS
     struct Milestone {
         uint256 amount;
         MilestoneStatus status;
@@ -47,7 +42,7 @@ contract MinimalEscrow {
         ProjectStatus status;
     }
 
-    // === STATE ===
+    // STATE VARIABLES 
     mapping(bytes32 => Project) public projects;
     mapping(bytes32 => Milestone[]) public projectMilestones;
     mapping(bytes32 => bool) public isDisputed;
@@ -55,14 +50,14 @@ contract MinimalEscrow {
     uint256 public platformFeePercent = 2;
     uint256 public constant FEE_DENOMINATOR = 100;
 
-    // === EVENTS (Minimal set maintained) ===
+    // Event to be emitted on various actions
     event FundsDeposited(bytes32 indexed projectId);
     event MilestoneApproved(bytes32 indexed projectId, uint256 milestoneIndex);
     event PaymentReleased(bytes32 indexed projectId, address indexed creative, uint256 amount, uint256 platformFee);
     event DisputeRaised(bytes32 indexed projectId, address indexed initiator);
     event ProjectCompleted(bytes32 indexed projectId);
 
-    // === MODIFIERS ===
+    // MODIFIERS 
     modifier onlyClient(bytes32 _projectId) {
         require(projects[_projectId].client == msg.sender, "Not client");
         _;
@@ -78,7 +73,7 @@ contract MinimalEscrow {
         _;
     }
     
-    // === CONSTRUCTOR ===
+    // CONSTRUCTOR
     constructor() {
         _owner = msg.sender;
         _status = _NOT_ENTERED; // Initialize ReentrancyGuard
@@ -89,10 +84,8 @@ contract MinimalEscrow {
         return _owner;
     }
 
-    // === CORE FUNCTIONS (Same logic as simplified version) ===
-
+    // Core contract functions
     function createProject(bytes32 _projectId, address _creative, uint256 _totalAmount) external {
-        // ... implementation remains the same ...
         require(projects[_projectId].client == address(0), "Exists");
         require(_creative != msg.sender, "Self-funding disallowed");
         require(_totalAmount > 0, "Amount > 0");
@@ -108,7 +101,6 @@ contract MinimalEscrow {
     }
 
     function depositFunds(bytes32 _projectId) external payable projectExists(_projectId) onlyClient(_projectId) {
-        // ... implementation remains the same ...
         Project storage project = projects[_projectId];
         require(project.status == ProjectStatus.PendingFunding, "Not pending funding");
         require(msg.value == project.totalAmount, "Incorrect amount");
@@ -117,8 +109,9 @@ contract MinimalEscrow {
         emit FundsDeposited(_projectId);
     }
 
+    // Milestone management functions
+
     function addMilestone(bytes32 _projectId, uint256 _amount) external projectExists(_projectId) onlyClient(_projectId) {
-        // ... implementation remains the same ...
         Project storage project = projects[_projectId];
         require(project.status == ProjectStatus.Active, "Not active");
         
@@ -135,7 +128,6 @@ contract MinimalEscrow {
     }
 
     function submitMilestone(bytes32 _projectId, uint256 _milestoneIndex) external projectExists(_projectId) onlyCreative(_projectId) {
-        // ... implementation remains the same ...
         Milestone storage milestone = projectMilestones[_projectId][_milestoneIndex];
         require(milestone.status == MilestoneStatus.Pending, "Not pending");
         require(!milestone.paid, "Already paid");
@@ -144,7 +136,6 @@ contract MinimalEscrow {
     }
 
     function approveMilestone(bytes32 _projectId, uint256 _milestoneIndex) external nonReentrant projectExists(_projectId) onlyClient(_projectId) {
-        // ... implementation remains the same ...
         Project storage project = projects[_projectId];
         Milestone storage milestone = projectMilestones[_projectId][_milestoneIndex];
         
@@ -172,8 +163,9 @@ contract MinimalEscrow {
         }
     }
 
+    // Dispute raising and reolution implementation
+
     function raiseDispute(bytes32 _projectId) external projectExists(_projectId) {
-        // ... implementation remains the same ...
         Project storage project = projects[_projectId];
         require(msg.sender == project.client || msg.sender == project.creative, "Not party");
         require(project.status == ProjectStatus.Active, "Not active");
@@ -186,7 +178,6 @@ contract MinimalEscrow {
     }
 
     function resolveDispute(bytes32 _projectId, uint256 _amountToCreative) external nonReentrant onlyOwner projectExists(_projectId) {
-        // ... implementation remains the same ...
         Project storage project = projects[_projectId];
         require(project.status == ProjectStatus.Disputed, "Not disputed");
 
@@ -225,7 +216,7 @@ contract MinimalEscrow {
         require(success, "Withdrawal failed");
     }
 
-    // === VIEW FUNCTIONS ===
+    // VIEW FUNCTIONS 
     function getProjectStatus(bytes32 _projectId) external view returns (ProjectStatus) {
         return projects[_projectId].status;
     }
