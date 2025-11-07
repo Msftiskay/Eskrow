@@ -38,6 +38,10 @@ class ProjectCreateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         milestones_data = validated_data.pop('milestones', [])
+
+        if 'creative' not in validated_data:
+            validated_data['creative'] = None
+            
         project = Project.objects.create(**validated_data)
         
         for milestone_data in milestones_data:

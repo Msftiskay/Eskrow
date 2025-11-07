@@ -60,7 +60,7 @@ function Dashboard() {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Dashboard</h2>
         {user?.user_type === 'client' && (
-          <Link to="/projects/create">
+          <Link to="/projects">
             <Button variant="primary">
               <FiPlus className="me-2" />
               Create New Project
@@ -107,7 +107,7 @@ function Dashboard() {
           <Card.Body>
             <p className="text-muted">No projects yet</p>
             {user?.user_type === 'client' && (
-              <Link to="/projects/create">
+              <Link to="/projects">
                 <Button variant="primary">Create Your First Project</Button>
               </Link>
             )}
