@@ -5,6 +5,8 @@ import AppNavbar from './components/layout/Navbar';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Dashboard from './components/dashboard/Dashboard';
+import CreateProject from './components/projects/CreateProject';
+import ProjectDetail from './components/projects/ProjectDetail';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Protected Route Component
@@ -35,6 +37,22 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/projects/create" 
+            element={
+              <ProtectedRoute>
+                <CreateProject />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/projects/:id" 
+            element={
+              <ProtectedRoute>
+                <ProjectDetail />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </AuthProvider>
     </Router>
@@ -42,3 +60,4 @@ function App() {
 }
 
 export default App;
+

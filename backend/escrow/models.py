@@ -15,8 +15,11 @@ class Project(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     description = models.TextField()
+    
+    #Relationships
     client = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='client_projects')
     creative = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='creative_projects', null=True, blank=True)
+    
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
     smart_contract_address = models.CharField(max_length=42, blank=True, null=True)

@@ -21,6 +21,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from escrow.views import ProjectViewSet, MilestoneViewSet
 from accounts.views import UserRegistrationView, UserProfileView
 
+#This is the main URL configuration for the eskrow project.
 router = DefaultRouter()
 router.register(r'projects', ProjectViewSet, basename='project')
 router.register(r'milestones', MilestoneViewSet, basename='milestone')

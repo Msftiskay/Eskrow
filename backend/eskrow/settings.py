@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+#CORS HEADERS SETTINGS
 # Application definition
 
 INSTALLED_APPS = [
@@ -84,8 +84,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eskrow.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# PostgreSQL database configuration
 
 DATABASES = {
     'default': {
@@ -104,6 +103,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
+#JSON WEB TOKEN SETTINGS
 # REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

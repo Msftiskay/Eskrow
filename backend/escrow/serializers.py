@@ -1,3 +1,4 @@
+#Data transformation between Python and JSON for API communication
 from rest_framework import serializers
 from .models import Project, Milestone
 from accounts.models import User

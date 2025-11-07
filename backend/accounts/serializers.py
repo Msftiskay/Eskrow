@@ -1,3 +1,4 @@
+#Data serialization for user registration and profile management
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 

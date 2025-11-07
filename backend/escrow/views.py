@@ -1,3 +1,4 @@
+#CRUD and custom actions for Project and Milestone management
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action

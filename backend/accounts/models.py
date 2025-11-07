@@ -1,3 +1,4 @@
+#Custom User model on how user is stored in DB
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
